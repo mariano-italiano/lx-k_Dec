@@ -61,6 +61,10 @@ apt-mark hold kubelet kubeadm kubectl >/dev/null 2>&1
 
 if [[ $(hostname) =~ .*master.* ]] || [[  $(hostname) =~ .*cp.* ]]
 then
+        # INSTALL BASH COMPLETION
+        sudo apt-get install bash-completion >/dev/null 2>&1
+        echo 'source <(kubectl completion bash)' >>~/.bashrc
+        source ~/.bashrc
         echo "[TASK 12] Initialize the cluster"
         echo " Please initialize the cluster on master node using 'kubeadm init' command"
 fi
