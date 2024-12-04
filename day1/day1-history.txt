@@ -1,0 +1,266 @@
+lsmod | grep -e overlay -e br_netfilter
+cat <<EOF | sudo tee /etc/modules-load.d/kubernetes.conf
+
+ilter
+
+vi /etc/modules-load.d/kubernetes.conf
+lsmod | grep -e overlay -e br_netfilter
+sudo modprobe overlay
+sudo modprobe br_netfilter
+lsmod | grep -e overlay -e br_netfilter
+sysctl -a | grep -e ip_forward -e net.bridge.bridge-nf-call
+vi /etc/sysctl.d/99-kubernetes.conf
+sudo vi /etc/sysctl.d/99-kubernetes.conf
+sudo sysctl --system
+sysctl -a | grep -e ip_forward -e net.bridge.bridge-nf-call
+sudo apt-get install containerd vim curl -y
+sudo apt-get update; sudo apt-get install containerd vim curl -y
+sudo mkdir /etc/containerd
+sudo containerd config default | sudo tee /etc/containerd/config.toml
+sudo vi /etc/containerd/config.toml
+sudo systemctl restart containred
+sudo systemctl restart containerd.service 
+sudo systemctl status containerd.service 
+sudo swapon -s
+sudo swapoff -a
+sudo swapon -s
+sudo vi /etc/fstab 
+sudo apt-get isntall apt-transport-https -y
+sudo apt-get install apt-transport-https -y
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+sudo apt-get update
+sudo apt-cache madison kubeadm
+sudo apt-get install kubelet=1.30.6-1.1 kubeadm=1.30.6-1.1 kubectl=1.30.6-1.1 -y
+sudo apt-mark hold kubelet kubeadm kubectl 
+sudo kubeadm init --help
+sudo kubeadm init --pod-network-cidr 192.168.0.0/16 
+mkdir .kube
+ls -la 
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+ls -la .kube/
+sudo chown student:student -R .kube/config 
+sudo chown student:student -R .kube/
+ls -la .kube/
+kubectl get nodes
+kubectl get pods -A
+CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
+CLI_ARCH=amd64
+if [ "$(uname -m)" = "aarch64" ]; then CLI_ARCH=arm64; fi
+curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
+sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum
+sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
+rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
+cilium install
+watch -n1 kubectl get all -A
+ls -la /etc/cni/net.d/
+sudo ls -la /etc/cni/net.d
+kubectl get nodes
+watch -n1 kubectl get pods -A
+sudo kubeadm token create --print-join-command
+kubectl get nodes
+watch -n1 kubectl get pods -A
+watch -n1 kubectl get pods -A -o wide
+watch -n1 kubectl get pods -A
+watch -n1 kubectl get pods -A -o wide
+kubectl drain node
+kubectl drain k8s-worker1
+kubectl drain k8s-worker01
+kubectl drain k8s-worker01 --ignore-daemonsets
+kubectl get node
+kubectl delete node k8s-worker01
+kubectl get node
+kubectl get pod -A -o wide
+kubectl  get ndoes
+kubectl  get nodes
+sudo apt-get install bash-completion
+echo 'source <(kubectl completion bash)' >>~/.bashrc
+source .bashrc 
+kubectl get nodes
+kubectl apply -f https://downloads.portainer.io/ce2-21/portainer-agent-k8s-nodeport.yaml
+kubectl get svc
+kubectl get svc -A
+kubectl get namespaces 
+kubectl get ns
+kubectl delete -f https://downloads.portainer.io/ce2-21/portainer-agent-k8s-nodeport.yaml
+kubectl get ns
+kubectl get pods -n kube-system 
+kubectl get pods -n kube-public 
+kubectl get pods
+kubectl get pods -A
+kubectl get pods --all-namespaces  
+kubectl get ns
+kubectl create ns app1
+kubectl get ns
+kubectl describe ns app1
+kubectl delete ns app1
+kubectl api-resources  
+kubectl api-versions 
+kubectl api-resources  | awk '{print $3}'|uniq 
+git clone https://github.com/mariano-italiano/lx-k_Dec.git
+sudo apt-get install git -y
+git clone https://github.com/mariano-italiano/lx-k_Dec.git
+git config --global core.hookspath 'hooks' && git config --global credential.helper store
+cd lx-k_Dec/
+mkdir day1
+cd day1
+ls -la
+vi first-pod.yaml
+kubectl apply -f first-pod.yaml 
+kubectl get pod
+vi first-pod.yaml 
+kubectl describe pod nginx 
+kubectl apply -f first-pod.yaml 
+kubectl describe pod nginx 
+vi first-pod.yaml 
+kubectl apply -f first-pod.yaml 
+vi first-pod.yaml 
+kubectl apply -f first-pod.yaml 
+vi first-pod.yaml 
+kubectl apply -f first-pod.yaml 
+vi first-pod.yaml 
+kubectl apply -f first-pod.yaml 
+vi first-pod.yaml 
+kubectl describe pod nginx 
+vi first-pod.yaml 
+kubectl apply -f first-pod.yaml 
+kubectl get pod
+vi first-pod.yaml 
+kubectl delete pod nginx2
+kubectl describe pod nginx 
+kubectl run python-api --image marcinkujawski/python-api:1.0 -l app=python  
+kubectl get pod
+kubectl run python-api --image marcinkujawski/python-api:1.0 -l app=python --dry-run=client -o yaml 
+kubectl run python-api --image marcinkujawski/python-api:1.0 -l app=python --dry-run=client -o yaml > python-pod.yaml
+vi python-pod.yaml
+kubectl apply -f python-pod.yaml
+kubectl get pod
+kubectl get pod -o wide 
+kubectl get pod -o wide --show-labels 
+kubectl get pod --selector app=python \
+kubectl get pod --selector app=python 
+kubectl get pod --selector app
+kubectl edit pod nginx 
+kubectl get pod --selector app
+kubectl get pod --selector application
+kubectl get pod -l app
+kubectl get pod -A -l app
+kubectl exec --help
+kubectl exec -it python-app -- bash
+kubectl exec -it python-app -- ls -la
+kubectl exec -it python-app -- hostname
+kubectl exec -it python-app -- curl http://localhost:8080/api
+kubectl exec -it nginx -- bash
+kubectl logs nginx 
+kubectl logs nginx --all-containers 
+ls
+kubectl replace --force -f python-pod.yaml 
+kubectl get pod nginx -o yaml 
+kubectl get pod nginx -o yaml > nginx.yaml
+vi nginx.yaml
+kubectl replace --force -f nginx.yaml
+kubectl logs  python-app
+kubectl get pod nginx -o yaml
+vi ~/.kube/config \
+vi ~/.kube/config 
+kubectl api-resources | grep COnfig]
+kubectl api-resources | grep Config
+vi ~/.kube/config 
+kubectl config current-context
+kubectl config view
+vi ~/.kube/config 
+grep certificate-authority-data ~/.kube/config 
+grep certificate-authority-data ~/.kube/config | cut -d " " -f 6
+export auth=$(grep certificate-authority-data ~/.kube/config | cut -d " " -f 6)
+export client=$(grep client-cert ~/.kube/config | cut -d " " -f 6)
+export key=$(grep client-key-data ~/.kube/config | cut -d " " -f 6)
+echo $client 
+echo $key
+echo $client | base64 -d - > client.pem
+vi client.pem 
+echo $key | base64 -d - > client.key
+echo $auth | base64 -d - > ca.pem
+vi ca.pem 
+vi key
+vi client.
+vi client.key 
+ls -la
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/nodes
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/nodes > getNodes.txt
+vi getNodes.txt
+mv getNodes.txt getNodes.json
+kubectl get nodes -o json 
+kubectl get nodes -o json > getNodes2.json 
+diff getNodes.json getNodes2.json 
+curl https://192.168.1.100:6443/api/v1/nodes
+curl -k https://192.168.1.100:6443/api/v1/nodes
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/pods
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/pods | jq -r '.items[].metadata.name'
+sudo apt  install jq -y
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/pods | jq -r '.items[].metadata.name'
+curl -s --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/pods | jq -r '.items[].metadata.name'
+curl -s --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/pods | jq -r '.items[] | "Pod Name: \(.metadata.name), State: \(.state.phase)"'
+curl -s --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/pods | jq -r '.items[] | "Pod Name: \(.metadata.name), State: \(.status.phase)"'
+kubectl get pods -A
+kubectl get pods 
+kubectl get pods --v=6
+curl -s --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/namespaces/default/pods?limit=500 | jq -r '.items[] | "Pod Name: \(.metadata.name), State: \(.status.phase)"'
+kubectl get pods --v=10
+kubectl config current-context 
+kubectl config get-contexts 
+kubectl config use-context kubernetes-admin@kubernetes
+kubectl config current-context 
+kubectl config get-contexts 
+kubectl get pods
+kubectl port-forward nginx 8080:80
+openssl genrsa -out devops.key
+openssl req -new -key devops.key -out devops.csr -subj "/CN=devops"
+ls -la 
+vi devops.csr
+vi devops.key 
+cat devops.csr | base64 | tr -d '\n'
+vi user-request-devops.yaml
+kubectl apply -f user-request-devops.yaml
+vi user-request-devops.yaml
+kubectl apply -f user-request-devops.yaml
+kubectl get csr
+kubectl certificate approve user-request-devops
+kubectl get csr
+kubectl get csr user-request-devops -o json
+kubectl get csr user-request-devops -o jsonpath='{.status.certificate}'
+kubectl get csr user-request-devops -o jsonpath='{.status.certificate}' | base64 -d > devops.crt
+vi devops.crt
+kubectl --kubeconfig config-devops config set-cluster preprod --insecure-skip-tls-verify=true --sever=https://192.168.1.100:6443
+kubectl --kubeconfig config-devops config set-cluster preprod --insecure-skip-tls-verify=true --server=https://192.168.1.100:6443
+vi config-devops
+kubectl --kubeconfig config-devops config set-credentials devops --client-certificate devops.crt --client-key devops.key --embed-certs=true
+vi config-devops
+kubectl --kubeconfig config-devops config set-context devops-context --cluster preprod --user=devops
+vi config-devops
+kubectl --kubeconfig config-devops config use-context devops-context
+vi config-devops
+sudo useradd devops 
+passwd devops
+sudo passwd devops
+sudo -i
+kubectl create ns devops
+kubectl create role -n devops dev --help
+kubectl create role -n devops dev --verb=get,list,watch --resource=pods 
+kubectl -n devops create rolebinding dev-binding --help
+kubectl -n devops create rolebinding dev-binding ----role=dev --user=devops
+kubectl -n devops create rolebinding dev-binding --role=dev --user=devops
+kubectl describe role dev
+kubectl describe role dev -n devops
+kubectl describe rolebindings.rbac.authorization.k8s.io -n devops
+sudo -i
+kubectl edit role dev -n devops
+kubectl describe  role dev -n devops
+sudo -i
+kubectl edit role dev -n devops
+kubectl create role test --verb=create,get,list,watch --resource=pods,deployments --dry-run=client
+kubectl create role test --verb=create,get,list,watch --resource=pods,deployments --dry-run=client -o yaml
+kubectl edit role dev -n devops
+kubectl describe  role dev -n devops
+sudo -i
+history
+history| awk '$1 > 4' | cut -c 8- > day1-history.txt
