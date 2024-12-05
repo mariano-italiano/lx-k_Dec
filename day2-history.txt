@@ -1,0 +1,256 @@
+kubectl get clusterrole
+kubectl describe clusterrole view 
+kubectl describe clusterrole admin
+kubectl get pods
+kubectl get pods --show-labels 
+kubectl describe pod nginx 
+kubectl annotate pod description='test web pod for training'
+kubectl annotate pod nginx description='test web pod for training'
+kubectl annotate pod nginx version='v1.0'
+kubectl annotate pod nginx lastModified='05.12.2024'
+kubectl describe pod nginx 
+kubectl annotate pod nginx version='v2.0'
+kubectl annotate pod nginx version='v2.0' --overwrite
+kubectl describe pod nginx 
+kubectl annotate pod nginx lastModified- 
+kubectl describe pod nginx 
+kubectl edit pod nginx 
+kubectl get pods --show-labels 
+kubectl label pod python-api tier=prod
+kubectl get pods --show-labels 
+kubectl label pod python-api tier=dev
+kubectl label pod python-api tier=dev --overwrite
+kubectl get pods --show-labels 
+kubectl label pod python-api tier-
+kubectl get pods --show-labels 
+kubectl get pods -A --show-labels 
+kubectl label pod python-api tier=dev
+kubectl get pods -A --show-labels 
+kubectl get pod -A --selector 'tier in(prod)'
+kubectl get pod -A --selector 'tier in(prod,dev)'
+kubectl get pod -A --selector 'tier in(prod,dev,cat)'
+kubectl get pod -A --selector 'tier in(prod,dev,control-plane),component notin(etcd)'
+kubectl get pod -A --selector 'tier in(prod,dev,control-plane),component notin(etcd,kube-apiserver)'
+kubectl delete pod -l 'tier in(prod,dev)'
+cd lx-k_Dec
+mkdir day2
+kubectl apply -f day1/
+kubectl get pods
+cd day2
+cp ../day1/nginx.yaml busybox.yaml
+vi busybox.yaml
+kubectl apply -f busybox.yaml 
+kubectl get pods
+kubectl get pod busybox -o yaml
+kubectl get pod busybox -o yaml|grep -i restart
+kubectl get pods
+vi busybox.yaml 
+kubectl replace --force -f busybox.yaml
+kubectl get pods
+vi busybox.yaml 
+kubectl replace --force -f busybox.yaml
+vi busybox.yaml 
+kubectl get pods
+kubectl exec -it busybox -- sh
+vi multicontainer-pod.yaml
+tail -f /var/log/test
+echo $?
+tail -F /var/log/test
+kubectl apply -f multicontainer-pod.yaml 
+kubectl  get pods
+kubectl exec -it multicontainer-pod -- bash
+kubectl exec -it multicontainer-pod -- sh
+kubectl exec -it multicontainer-pod -c sidecar -- sh
+kubectl logs multicontainer-pod 
+kubectl logs multicontainer-pod --all-containers 
+kubectl logs multicontainer-pod -c busybox.yaml 
+kubectl logs multicontainer-pod -c busybox1
+kubectl logs multicontainer-pod -c sidecar
+vi init-pod.yaml
+kubectl apply -f init-pod.yaml
+watch -n1 kubectl get pod
+cp multicontainer-pod.yaml init-pod2.yaml
+vi init-pod2.yaml
+kubectl apply -f init-pod2.yaml
+watch -n1 kubectl get pod
+kubectl exec -it init-pod2 -- sh
+kubectl exec -it init-pod2 -c download -- sh
+kubectl logs init-pod2 --all-containers 
+kubectl get pods -o wide
+kubectl replace --force -f init-pod2.yaml 
+kubectl get pods -o wide
+vi init-nginx.html
+vi init-nginx.yaml
+kubectl apply -f init-nginx.yaml
+kubectl  get pods
+watch -n1 kubectl  get pods
+kubectl replace --force -f init-nginx.yaml 
+watch -n1 kubectl  get pods
+kubectl logs web
+kubectl logs web -c svc-check
+kubectl logs web --all-containers 
+vi init-nginx-custom.yaml
+kubectl apply -f init-nginx-custom.yaml
+kubectl get pods
+kubectl get pods -o wide
+vi my-replicaset.yaml
+kubectl apply -f my-replicaset.yaml
+kubectl get rs
+kubectl describe rs my-replicaset 
+kubectl get rs,pod
+kubectl get rs,pod --show-labels 
+kubectl label pod multicontainer-pod tier=frontend
+kubectl get rs,pod --show-labels 
+kubectl label pod multicontainer-pod tier-
+watch -n1 kubectl get rs,pod --show-labels 
+kubectl scale rs my-replicaset --replicas 10
+watch -n1 kubectl get rs,pod --show-labels 
+kubectl scale rs my-replicaset --replicas 2
+watch -n1 kubectl get rs,pod --show-labels 
+kubectl describe rs my-replicaset 
+kubectl create deployment my-deplyoment --image nginx:1.19.2 --replicas=3
+kubectl get deploy
+kubectl get deploy,rs,pod
+kubectl scale deployment my-deplyoment --replicas 8
+kubectl get deploy,rs,pod
+kubectl describe deployments.apps my-deplyoment 
+kubectl get deployments.apps my-deplyoment | grep rolling -i -A 5
+kubectl get deployments.apps my-deplyoment | grep -i strategy -A 5
+kubectl get deployments.apps my-deplyoment -o yaml | grep rolling -i -A 5
+kubectl edit deployments.apps my-deplyoment 
+vi nginx-deployment,yaml
+mv vi nginx-deployment,yaml
+mv nginx-deployment,yaml nginx-deployment.yaml 
+vi nginx-deployment.yaml
+kubectl apply -f nginx-deployment.yaml
+kubectl get deployments.apps , pod
+kubectl get deployments.apps,pod
+vi nginx-deployment.yaml 
+kubectl replace --force -f nginx-deployment.yaml
+kubectl get deployments.apps,pod
+kubectl set image deployment my-deplyoment web=nginx:1.16.1
+kubectl describe deployments.apps my-deplyoment 
+vi nginx-deployment.yaml 
+kubectl delete deployments.apps my-deplyoment 
+kubectl apply -f nginx-deployment.yaml
+kubectl describe deployments.apps my-deplyoment 
+vi nginx-deployment.yaml 
+kubectl get deploy
+kubectl describe deployments.apps nginx-deployment 
+kubectl set image deployment nginx-deployment web=nginx:1.16.1
+kubectl rollout status deployment nginx-deployment 
+kubectl describe deployments.apps nginx-deployment 
+kubectl rollout history deployment nginx-deployment 
+kubectl get pods
+kubectl annotate deployments.apps nginx-deployment kubernetes.io/change-cause="updated nginx version from 1.14.2 to 1.16.2, change number: No12345, implementer: Marcin K."
+kubectl rollout history deployment nginx-deployment 
+kubectl set image deployment nginx-deployment web=nginx:1.19.2 --record 
+watch -n1 kubectl get pods
+kubectl rollout status deployment nginx-deployment 
+kubectl rollout history deployment nginx-deployment 
+kubectl edit deployments.apps nginx-deployment 
+watch -n1 kubectl get pods
+kubectl rollout history deployment nginx-deployment 
+kubectl set image deployment nginx-deployment web=nginx:broken 
+kubectl rollout history deployment nginx-deployment 
+kubectl rollout status deployment nginx-deployment 
+kubectl get pods
+kubectl rollout history deployment nginx-deployment 
+kubectl rollout undo deployment nginx-deployment --to-revision 2
+kubectl get pods
+kubectl rollout status deployment nginx-deployment 
+kubectl rollout history deployment nginx-deployment 
+kubectl get rs
+kubectl describe rs nginx-deployment-69746ff555
+kubectl describe rs nginx-deployment-85db9f8cb6 
+kubectl edit  deployments.apps nginx-deployment 
+kubectl set image deployment nginx-deployment web=nginx:broken
+watch -n1 kubectl get pods 
+kubectl get pods -A
+kubectl get pods -A -o wide
+kubectl describe nodes k8s-master 
+vi my-daemonset.yaml
+kubectl apply -f my-daemonset.yaml
+kubectl get ds
+kubectl get pods
+kubectl get pods -o wide
+kubectl edit ds my-daemonset 
+kubectl get pods -o wide
+kubectl get ds -A
+vi my-sts.yaml
+kubectl apply -f my-sts.yaml
+vi my-sts.yaml
+kubectl get statefulsets.apps 
+kubectl get sts
+kubectl get sts,pod
+kubectl scale statefulset nginx-stfs --replicas 8
+watch -n1 kubectl get sts,pod
+kubectl scale statefulset nginx-stfs --replicas 1
+watch -n1 kubectl get sts,pod
+vi my-job.yaml
+kubectl apply -f my-job.yaml
+kubectl get pod,jobs.batch 
+wathc -n 1kubectl get pod,jobs.batch 
+wathc -n 1 kubectl get pod,jobs.batch 
+watch -n 1 kubectl get pod,jobs.batch 
+vi sleep-jonb.yaml
+vi sleep-job.yaml
+kubectl apply -f sleep-job.yaml
+watch -n 1 kubectl get pod,jobs.batch 
+vi aprallel-job.yaml
+kubectl apply -f aprallel-job.yaml
+watch -n 1 kubectl get pod,jobs.batch 
+kubectl get pods
+kubectl logs parallel-job-5bcfw
+kubectl logs parallel-job-kdprc
+kubectl delete jobs.batch parallel-job 
+kubectl logs parallel-job-5bcfw
+kubectl get pods
+vi vi hello-cronjob.yaml
+vi  hello-cronjob.yaml
+kubectl apply -f hello-cronjob.yaml
+kubectl get pods,cronjobs.batch 
+kubectl get pods,cronjobs.batch,jobs.batch 
+wathc -n1 kubectl get pods,cronjobs.batch,jobs.batch 
+watch -n1 kubectl get pods,cronjobs.batch,jobs.batch 
+kubectl delete -f hello-cronjob.yaml
+watch -n1 kubectl get pods,cronjobs.batch,jobs.batch 
+ls-l a
+ls -la
+rm vi
+kubectl apply -f init-pod.yaml
+kubectl get pods 
+kubectl get pods --show-labels 
+kubectl expose pod  nginx --name nginx-clusterip-svc --port 80
+kubectl get svc
+kubectl exec -it busybox -- sh
+kubectl get ns
+kubectl apply -f busybox.yaml  -n devops
+kubectl -n devops exec -it busybox -- sh
+kubectl get svc
+kubectl expose pod nginx --name nginx-nodeport-svc --type=NodePort --port 80
+kubectl get svc
+kubectl edit svc nginx-nodeport-svc 
+kubectl get svc
+kubectl expose pod nginx --name nginx-lb-svc --type LoadBalancer --port 80
+kubectl get svc
+kubectl edit svc nginx-lb-svc 
+kubectl get svc
+kubectl edit svc nginx-lb-svc 
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+kubectl get all -n metallb-system
+watch -n1 kubectl get all -n metallb-system
+vi metallb-pool.yaml
+kubectl edit svc nginx-lb-svc 
+kubectl get svc
+kubectl apply -f metallb-pool.yaml 
+kubectl get svc
+vi metallb-pool.yaml
+kubectl apply -f metallb-pool.yaml 
+kubectl get svc
+kubectl delete ns metallb-system
+kubectl get svc
+git status
+cd ..
+history
+history| awk '$1 > 280' | cut -c 8- > day2-history.txt

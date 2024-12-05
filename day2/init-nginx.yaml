@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+  labels: 
+    kubernetes.io/app: web
+spec:
+  initContainers:
+  - name: svc-check
+    image: 'radial/busyboxplus:curl'
+    command: ['sh', '-c', 'until nslookup web-svc; do echo waiting for web-svc service to be available; sleep 2; done']
+  containers:
+  - name: nginx
+    image: nginx:1.19.1

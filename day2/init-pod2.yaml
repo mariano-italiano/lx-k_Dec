@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-pod2
+spec:
+  initContainers:
+  - name: download
+    image: alpine:3.2
+    command: ['sh', '-c', 'apk update; apk add git; mkdir /app/app-content; git clone https://github.com/mariano-italiano/lx-k_Dec.git /app/app-content']
+    volumeMounts:
+    - name: sharedvol
+      mountPath: /app
+  containers:
+  - name: busybox1
+    image: busybox
+    command: ['sh', '-c', 'while true; do echo logs data >> /output/output.log; sleep 5; done']
+    volumeMounts:
+    - name: sharedvol
+      mountPath: /output
+  - name: sidecar
+    image: busybox
+    command: ['sh', '-c', 'tail -f /input/output.log']
+    volumeMounts:
+    - name: sharedvol
+      mountPath: /input
+  volumes:
+  - name: sharedvol
+    emptyDir: {}
