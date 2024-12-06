@@ -1,0 +1,4 @@
+VAR1=VALUE1
+TEMP_PATH=/tmp/path1
+# zmienna definiująca versje
+VERSION=1.0
